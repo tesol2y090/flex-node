@@ -1,8 +1,8 @@
-const app = require('./app');
-require('dotenv').config();
+const app = require("./app")
+require("dotenv").config()
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => {
-    console.log(`Now listening on http://localhost:${PORT}`);
-});
+  console.log(`Now listening on http://localhost:${PORT}`)
+})
