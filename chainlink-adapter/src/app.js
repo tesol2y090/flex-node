@@ -1,12 +1,22 @@
-const app = require('express')();
-const cors = require('cors');
-const bodyParser = require('body-parser');
+require("express-group-routes")
+const app = require("express")()
+const cors = require("cors")
+const bodyParser = require("body-parser")
 
-const getCompoundCredits = require('./services/getCompoundCredits');
+const {
+  getCompoundCredits,
+  computeCompoundCredits,
+} = require("./services/compoundCredits")
 
-app.use(cors());
-app.use(bodyParser.json());
+app.use(cors())
+app.use(bodyParser.json())
 
-app.get('/getCompoundCredits', getCompoundCredits);
+app.group("/get", (router) => {
+  router.get("/compoundCredits", getCompoundCredits)
+})
 
-module.exports = app;
+app.group("/compute", (router) => {
+  router.post("/compoundCredits", computeCompoundCredits)
+})
+
+module.exports = app
