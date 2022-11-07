@@ -68,7 +68,9 @@ const getCompoundCredits = async (req, res) => {
     const cid = await storage.put(dataFile)
     console.log("stored files with cid:", cid)
     return res.status(200).json({
-      credits: cid,
+      data: {
+        credits: cid,
+      },
     })
   } catch (err) {
     console.log(err)

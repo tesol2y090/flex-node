@@ -12,7 +12,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.group("/get", (router) => {
-  router.get("/compoundCredits", getCompoundCredits)
+  router.post("/compoundCredits", getCompoundCredits)
 })
 
 app.group("/compute", (router) => {

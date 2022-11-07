@@ -12,10 +12,10 @@ services:
 
   chainlink:
     image: smartcontract/chainlink:1.3.0
-    container_name: chainlink-goerli
+    container_name: chainlink-mumbai
     restart: always
     env_file:
-      - ./environment/goerli.env
+      - ./environment/mumbai.env
     depends_on:
       - pg_chainlink
     ports:
