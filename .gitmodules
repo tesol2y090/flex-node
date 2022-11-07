@@ -4,3 +4,6 @@
 [submodule "flex-contracts/lib/chainlink-brownie-contracts"]
 	path = flex-contracts/lib/chainlink-brownie-contracts
 	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
+[submodule "flex-contracts/lib/solmate"]
+	path = flex-contracts/lib/solmate
+	url = https://github.com/rari-capital/solmate
