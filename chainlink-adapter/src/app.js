@@ -3,26 +3,19 @@ const app = require("express")()
 const cors = require("cors")
 const bodyParser = require("body-parser")
 
-const {
-  getCompoundCredits,
-  computeCompoundCredits,
-} = require("./services/compoundCredits")
-const { store, get } = require("./services/query")
+const { store: storeQuery, get: getQuery } = require("./services/query")
+const { get: getGraph } = require("./services/graph/get")
 
 app.use(cors())
 app.use(bodyParser.json())
 
 app.group("/query", (router) => {
-  router.post("/", store)
-  router.get("/", get)
+  router.post("/", storeQuery)
+  router.get("/", getQuery)
 })
 
-app.group("/get", (router) => {
-  router.post("/compoundCredits", getCompoundCredits)
-})
-
-app.group("/compute", (router) => {
-  router.post("/compoundCredits", computeCompoundCredits)
+app.group("/graph", (router) => {
+  router.get("/", getGraph)
 })
 
 module.exports = app
