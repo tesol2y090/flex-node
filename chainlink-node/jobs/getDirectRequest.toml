@@ -14,7 +14,7 @@ observationSource = """
                  timeout="30s"
                  requestData="{\\"data\\": { \\"chainId\\": $(decode_cbor.chainId), \\"account\\": $(decode_cbor.account)}}"
                 ]
-    parse 		[type="jsonparse"
+    parse 		  [type="jsonparse"
                  path="data,credits"
                  data="$(send_bridge)"]
     encode_data [type="ethabiencode" abi="(bytes32 requestId, string value)" data="{\\"requestId\\": $(decode_log.requestId), \\"value\\": $(parse)}"]

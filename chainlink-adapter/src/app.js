@@ -7,9 +7,15 @@ const {
   getCompoundCredits,
   computeCompoundCredits,
 } = require("./services/compoundCredits")
+const { store, get } = require("./services/query")
 
 app.use(cors())
 app.use(bodyParser.json())
+
+app.group("/query", (router) => {
+  router.post("/", store)
+  router.get("/", get)
+})
 
 app.group("/get", (router) => {
   router.post("/compoundCredits", getCompoundCredits)
