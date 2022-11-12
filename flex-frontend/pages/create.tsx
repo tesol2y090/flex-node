@@ -30,6 +30,7 @@ export default function Create() {
   const [category, setCategory] = useState<string>("")
   const [endpoint, setEndpoint] = useState<string>("")
   const [query, setQuery] = useState<string>("")
+  const [protocol, setProtocol] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const onSubmit = async () => {
@@ -59,6 +60,7 @@ export default function Create() {
         description,
         chain,
         category,
+        protocol,
         endpoint,
         query: encode(query),
         cid,
@@ -148,6 +150,14 @@ export default function Create() {
               <option value="social">Social</option>
               <option value="insurance">Insurance</option>
             </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel fontWeight="bold">Protocol</FormLabel>
+            <Input
+              value={protocol}
+              type="text"
+              onChange={(e) => setProtocol(e.target.value)}
+            />
           </FormControl>
           <FormControl>
             <FormLabel fontWeight="bold">Endpoint</FormLabel>

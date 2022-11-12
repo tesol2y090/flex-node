@@ -34,8 +34,8 @@ export const getQueryDataOne = async (
   return result
 }
 
-export const getQueryData = async () => {
+export const getQueryData = async (): Promise<QueryData[] | undefined> => {
   const querySnapshot = await getDocs(queryCollection)
   const queryList = querySnapshot.docs.map((doc) => doc.data())
-  return queryList
+  return queryList as QueryData[]
 }

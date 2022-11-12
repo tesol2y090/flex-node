@@ -1,9 +1,24 @@
 import Head from "next/head"
 import { Container, Divider, Stack } from "@chakra-ui/react"
+import { useState, useEffect } from "react"
+
 import Header from "../components/explore/header"
 import QueryCard from "../components/explore/queryCard"
+import { QueryData } from "../types"
+import { getQueryData } from "../firebase/queryData"
 
 export default function Explor() {
+  const [queryList, setQueryList] = useState<QueryData[] | undefined>([])
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getQueryData()
+      setQueryList(data)
+    }
+
+    getData()
+  }, [])
+
   return (
     <div>
       <Head>

@@ -4,6 +4,7 @@ export interface QueryData {
   description: string
   chain: string
   category: string
+  protocol?: string
   endpoint: string
   query: string
   cid?: string
