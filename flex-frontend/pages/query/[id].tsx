@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react"
 import Header from "../../components/create/header"
 import { useState, useEffect } from "react"
+import { decode } from "js-base64"
 import { getQueryDataOne } from "../../firebase/queryData"
 
 export default function Create() {
@@ -37,7 +38,7 @@ export default function Create() {
       setChain(queryData?.chain)
       setCategory(queryData?.category)
       setEndpoint(queryData?.endpoint)
-      setQuery(queryData?.query)
+      setQuery(decode(queryData?.query || ""))
       setCreator(queryData?.creator)
     }
 

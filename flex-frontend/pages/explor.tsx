@@ -1,5 +1,15 @@
 import Head from "next/head"
-import { Container, Divider, Stack } from "@chakra-ui/react"
+import {
+  Box,
+  Container,
+  Divider,
+  Flex,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+  Stack,
+  VStack,
+} from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 
 import Header from "../components/explore/header"
@@ -9,11 +19,14 @@ import { getQueryData } from "../firebase/queryData"
 
 export default function Explor() {
   const [queryList, setQueryList] = useState<QueryData[] | undefined>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
+    setIsLoading(true)
     const getData = async () => {
       const data = await getQueryData()
       setQueryList(data)
+      setIsLoading(false)
     }
 
     getData()
@@ -35,8 +48,41 @@ export default function Explor() {
         <Header />
         <Divider width="80%" my="5" />
         <Stack width="80%">
-          <QueryCard />
-          <QueryCard />
+          {queryList &&
+            queryList.map((data, index) => (
+              <QueryCard key={index} data={data} />
+            ))}
+
+          {isLoading &&
+            Array(10)
+              .fill(0)
+              .map((_, index) => (
+                <Box
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  width="100%"
+                  padding="6"
+                  key={index}
+                >
+                  <Flex justify="space-between" align="center" gap="2">
+                    <Flex gap="2" width="30%">
+                      <SkeletonCircle size="16" />
+                    </Flex>
+                    <VStack align="left" justify="center" width="23%">
+                      <Skeleton height="20px" />
+                      <Skeleton height="20px" />
+                    </VStack>
+                    <VStack align="left" justify="center" width="23%">
+                      <Skeleton height="20px" />
+                      <Skeleton height="20px" />
+                    </VStack>
+                    <VStack align="left" justify="center" width="23%">
+                      <Skeleton height="20px" />
+                      <Skeleton height="20px" />
+                    </VStack>
+                  </Flex>
+                </Box>
+              ))}
         </Stack>
       </Container>
     </div>
