@@ -7,13 +7,22 @@ import { QueryData } from "../../types"
 const QueryCard = ({ data }: { data: QueryData }) => {
   return (
     <Link href={`/query/${data.id}`}>
-      <Box borderWidth="1px" borderRadius="lg" width="100%" padding="6">
+      <Box
+        _hover={{
+          background: "gray.50",
+          boxShadow: "m",
+        }}
+        borderWidth="1px"
+        borderRadius="lg"
+        width="100%"
+        padding="6"
+      >
         <Flex justify="space-between" align="center">
           <Flex gap="2" width="30%">
             <Image
               borderRadius="full"
               boxSize="64px"
-              src="/chain/ethereum.png"
+              src={`/chain/${data.chain}.png`}
               alt="ethereum"
             />
             <VStack align="left" justify="center">

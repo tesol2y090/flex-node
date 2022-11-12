@@ -1,11 +1,10 @@
-import { GetServerSideProps } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import {
   Container,
   Divider,
   Stack,
-  Input,
+  Link,
   FormControl,
   FormLabel,
   Textarea,
@@ -15,6 +14,7 @@ import Header from "../../components/create/header"
 import { useState, useEffect } from "react"
 import { decode } from "js-base64"
 import { getQueryDataOne } from "../../firebase/queryData"
+import { ExternalLinkIcon } from "@chakra-ui/icons"
 
 export default function Create() {
   const router = useRouter()
@@ -26,6 +26,7 @@ export default function Create() {
   const [chain, setChain] = useState<string | undefined>("")
   const [category, setCategory] = useState<string | undefined>("")
   const [endpoint, setEndpoint] = useState<string | undefined>("")
+  const [cid, setCid] = useState<string | undefined>("")
   const [query, setQuery] = useState<string | undefined>("")
   const [creator, setCreator] = useState<string | undefined>("")
 
@@ -40,6 +41,7 @@ export default function Create() {
       setEndpoint(queryData?.endpoint)
       setQuery(decode(queryData?.query || ""))
       setCreator(queryData?.creator)
+      setCid(queryData?.cid)
     }
 
     getData()
@@ -75,7 +77,21 @@ export default function Create() {
           </FormControl>
           <FormControl>
             <FormLabel fontWeight="bold">Endpoint</FormLabel>
-            <Text> - {endpoint}</Text>
+            <Text>
+              -{" "}
+              <Link href={endpoint} isExternal>
+                {endpoint} <ExternalLinkIcon mx="2px" />
+              </Link>
+            </Text>
+          </FormControl>
+          <FormControl>
+            <FormLabel fontWeight="bold">CID</FormLabel>
+            <Text>
+              -{" "}
+              <Link href={`https://${cid}.ipfs.w3s.link/`} isExternal>
+                {cid} <ExternalLinkIcon mx="2px" />
+              </Link>
+            </Text>
           </FormControl>
           <FormControl>
             <FormLabel fontWeight="bold">Query Command</FormLabel>

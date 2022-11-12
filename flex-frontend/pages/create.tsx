@@ -41,12 +41,13 @@ export default function Create() {
 
     try {
       const id = uuidv4()
+      const base64Query = encode(query)
 
       const queryPayload = {
         id,
         name,
         endpoint,
-        query,
+        query: base64Query,
         creator: address,
       }
 
@@ -62,7 +63,7 @@ export default function Create() {
         category,
         protocol,
         endpoint,
-        query: encode(query),
+        query: base64Query,
         cid,
         creator: address,
       }
@@ -133,9 +134,9 @@ export default function Create() {
               onChange={(e) => setChain(e.target.value)}
               placeholder="Select Chain"
             >
-              <option value="ethereum">Ethereum</option>
-              <option value="polygon">Polygon</option>
-              <option value="optimism">Optimism</option>
+              <option value="Ethereum">Ethereum</option>
+              <option value="Polygon">Polygon</option>
+              <option value="Optimism">Optimism</option>
             </Select>
           </FormControl>
           <FormControl>
@@ -145,10 +146,10 @@ export default function Create() {
               onChange={(e) => setCategory(e.target.value)}
               placeholder="Select Category"
             >
-              <option value="defi">Defi</option>
-              <option value="nft">NFT</option>
-              <option value="social">Social</option>
-              <option value="insurance">Insurance</option>
+              <option value="Defi">Defi</option>
+              <option value="NFT">NFT</option>
+              <option value="Social">Social</option>
+              <option value="Insurance">Insurance</option>
             </Select>
           </FormControl>
           <FormControl>
