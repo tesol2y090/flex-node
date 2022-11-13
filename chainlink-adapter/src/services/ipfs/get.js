@@ -2,13 +2,13 @@ const { gql, request } = require("graphql-request")
 const { Web3Storage, File } = require("web3.storage")
 const { getFileUrl } = require("../../utils")
 const axios = require("axios").default
-const { Base64 } = require("js-base64")
 require("dotenv").config()
 
 const web3ApiKey = process.env.WEB3_STORAGE_API
+
 const storage = new Web3Storage({ token: web3ApiKey })
 
-const getGraphDataAsCIDFromQueryData = async (req, res) => {
+const getDataFromCIDIPFS = async (req, res) => {
   if (!req.body.data) {
     return res.status(400).json({
       error: "expected `data` in body of request",
@@ -16,34 +16,31 @@ const getGraphDataAsCIDFromQueryData = async (req, res) => {
   }
   console.log("req.body.data", req.body.data)
 
-  const { account, endpoint, query, chainId, name } = req.body.data
+  const { cid } = req.body.data
 
-  if (!account || !endpoint || !chainId || !name || !query) {
+  if (!cid) {
     return res.status(400).json({
       error: "invalid request",
     })
   }
 
-  const variables = {
-    account: account,
-    borrower: account,
-  }
-
-  const queryDecoded = Base64.decode(query)
-
   try {
-    const dataRes = await request(endpoint, queryDecoded, variables)
+    const dataRes = await storage.get(cid)
 
-    const buffer = Buffer.from(JSON.stringify(dataRes))
-    const dataFile = [new File([buffer], `${name}-${chainId}-${account}.json`)]
-    const cid = await storage.put(dataFile)
+    if (!dataRes.ok) {
+      throw new Error(
+        `failed to get ${cid} - [${dataRes.status}] ${dataRes.statusText}`
+      )
+    }
 
-    console.log("stored files with cid:", cid)
+    const [file] = await dataRes.files()
+
+    const fileUrl = getFileUrl(cid, file.name)
+
+    const queryData = await axios.get(fileUrl)
 
     return res.status(200).json({
-      data: {
-        cid,
-      },
+      data: queryData.data,
     })
   } catch (err) {
     console.log(err)
@@ -54,5 +51,5 @@ const getGraphDataAsCIDFromQueryData = async (req, res) => {
 }
 
 module.exports = {
-  getGraphDataAsCIDFromQueryData,
+  getDataFromCIDIPFS,
 }

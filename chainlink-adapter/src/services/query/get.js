@@ -8,48 +8,7 @@ const web3ApiKey = process.env.WEB3_STORAGE_API
 
 const storage = new Web3Storage({ token: web3ApiKey })
 
-const store = async (req, res) => {
-  if (!req.body.data) {
-    return res.status(400).json({
-      error: "expected `data` in body of request",
-    })
-  }
-  console.log("req.body.data", req.body.data)
-
-  const { name, endpoint, query, chainId } = req.body.data
-
-  if (!name || !endpoint || !query || !chainId) {
-    return res.status(400).json({
-      error: "invalid request",
-    })
-  }
-
-  try {
-    const payload = {
-      name,
-      endpoint,
-      query,
-      chainId,
-    }
-
-    const buffer = Buffer.from(JSON.stringify(payload))
-    const dataFile = [new File([buffer], `${name}.json`)]
-    const cid = await storage.put(dataFile)
-    console.log("stored files with cid:", cid)
-    return res.status(200).json({
-      data: {
-        query: cid,
-      },
-    })
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({
-      error: "something went wrong",
-    })
-  }
-}
-
-const get = async (req, res) => {
+const getQueryDataFromCID = async (req, res) => {
   if (!req.body.data) {
     return res.status(400).json({
       error: "expected `data` in body of request",
@@ -74,7 +33,7 @@ const get = async (req, res) => {
       )
     }
 
-    const [file] = (await dataRes.files())
+    const [file] = await dataRes.files()
 
     const fileUrl = getFileUrl(cid, file.name)
 
@@ -99,6 +58,5 @@ const get = async (req, res) => {
 }
 
 module.exports = {
-  store,
-  get,
+  getQueryDataFromCID,
 }
