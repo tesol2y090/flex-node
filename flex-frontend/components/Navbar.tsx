@@ -18,7 +18,20 @@ const Navbar = () => {
           <Button>Launch app</Button>
         </Link>
       ) : (
-        <ConnectButton chainStatus="icon" accountStatus="avatar" />
+        <>
+          <Flex>
+            <Link href="/explor">
+              <Button variant="ghost">Explore</Button>
+            </Link>
+            <Link href="/create">
+              <Button variant="ghost">Create</Button>
+            </Link>
+            <Link href="/guide">
+              <Button variant="ghost">Guide</Button>
+            </Link>
+          </Flex>
+          <ConnectButton chainStatus="icon" accountStatus="avatar" />
+        </>
       )}
     </Flex>
   )

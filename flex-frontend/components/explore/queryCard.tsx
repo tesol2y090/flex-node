@@ -22,21 +22,21 @@ const QueryCard = ({ data }: { data: QueryData }) => {
             <Image
               borderRadius="full"
               boxSize="64px"
-              src={`/chain/${data.chain}.png`}
+              src={`/chain/${data.protocolChain}.png`}
               alt="ethereum"
             />
             <VStack align="left" justify="center">
-              <Text fontWeight="bold">Query Name</Text>
-              <Text lineHeight="1">{data?.name}</Text>
+              <Text fontWeight="bold">Name</Text>
+              <Text lineHeight="1">{data?.queryName}</Text>
             </VStack>
           </Flex>
           <VStack align="left" justify="center" width="23%">
             <Text fontWeight="bold">Network</Text>
-            <Text lineHeight="1">{data?.chain}</Text>
+            <Text lineHeight="1">{data?.protocolChain}</Text>
           </VStack>
           <VStack align="left" justify="center" width="23%">
             <Text fontWeight="bold">Protocol</Text>
-            <Text lineHeight="1">{data?.protocol}</Text>
+            <Text lineHeight="1">{data?.protocolName}</Text>
           </VStack>
           <VStack align="left" justify="center" width="23%">
             <Text fontWeight="bold">Category</Text>

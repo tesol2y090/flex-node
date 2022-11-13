@@ -1,4 +1,5 @@
 import Head from "next/head"
+import { useRouter } from "next/router"
 import {
   Container,
   Divider,
@@ -12,7 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react"
 import { useState } from "react"
-import { useAccount } from "wagmi"
+import { useAccount, useNetwork } from "wagmi"
 import { encode } from "js-base64"
 import { Web3Storage, File } from "web3.storage"
 import { v4 as uuidv4 } from "uuid"
@@ -23,14 +24,16 @@ import { addQueryData } from "../firebase/queryData"
 
 export default function Create() {
   const toast = useToast()
+  const router = useRouter()
   const { address } = useAccount()
-  const [name, setName] = useState<string>("")
+  const { chain: addressChain } = useNetwork()
+  const [queryName, setQueryName] = useState<string>("")
   const [description, setDescription] = useState<string>("")
-  const [chain, setChain] = useState<string>("")
   const [category, setCategory] = useState<string>("")
+  const [protocolChain, setProtocolChain] = useState<string>("")
+  const [protocolName, setProtocolName] = useState<string>("")
   const [endpoint, setEndpoint] = useState<string>("")
   const [query, setQuery] = useState<string>("")
-  const [protocol, setProtocol] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const onSubmit = async () => {
@@ -45,7 +48,7 @@ export default function Create() {
 
       const queryPayload = {
         id,
-        name,
+        queryName,
         endpoint,
         query: base64Query,
         creator: address,
@@ -57,22 +60,23 @@ export default function Create() {
 
       const payload: QueryData = {
         id,
-        name,
+        queryName,
         description,
-        chain,
+        protocolName: protocolName,
+        protocolChain: protocolChain,
         category,
-        protocol,
         endpoint,
         query: base64Query,
         cid,
         creator: address,
+        chain: addressChain?.name,
       }
 
       await addQueryData(payload)
 
-      setName("")
+      setQueryName("")
       setDescription("")
-      setChain("")
+      setProtocolChain("")
       setCategory("")
       setEndpoint("")
       setQuery("")
@@ -82,6 +86,7 @@ export default function Create() {
         isClosable: true,
         position: "top-right",
       })
+      router.push(`/query/${id}`)
     } catch (error) {
       console.log(error)
       toast({
@@ -114,30 +119,18 @@ export default function Create() {
           <FormControl>
             <FormLabel fontWeight="bold">Query Name</FormLabel>
             <Input
-              value={name}
+              value={queryName}
               type="text"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setQueryName(e.target.value)}
             />
           </FormControl>
           <FormControl fontWeight="bold">
-            <FormLabel>Description</FormLabel>
+            <FormLabel fontWeight="bold">Description</FormLabel>
             <Input
               value={description}
               type="text"
               onChange={(e) => setDescription(e.target.value)}
             />
-          </FormControl>
-          <FormControl fontWeight="bold">
-            <FormLabel>Chain</FormLabel>
-            <Select
-              value={chain}
-              onChange={(e) => setChain(e.target.value)}
-              placeholder="Select Chain"
-            >
-              <option value="Ethereum">Ethereum</option>
-              <option value="Polygon">Polygon</option>
-              <option value="Optimism">Optimism</option>
-            </Select>
           </FormControl>
           <FormControl>
             <FormLabel fontWeight="bold">Category</FormLabel>
@@ -153,11 +146,25 @@ export default function Create() {
             </Select>
           </FormControl>
           <FormControl>
-            <FormLabel fontWeight="bold">Protocol</FormLabel>
+            <FormLabel fontWeight="bold">Protocol Chain</FormLabel>
+            <Select
+              value={protocolChain}
+              onChange={(e) => setProtocolChain(e.target.value)}
+              placeholder="Select Protocol Chain"
+            >
+              <option value="Ethereum">Ethereum</option>
+              <option value="Polygon">Polygon</option>
+              <option value="Avalanche">Avalanche</option>
+              <option value="Optimism">Optimism</option>
+              <option value="Arbitrum">Arbitrum</option>
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel fontWeight="bold">Protocol Name</FormLabel>
             <Input
-              value={protocol}
+              value={protocolName}
               type="text"
-              onChange={(e) => setProtocol(e.target.value)}
+              onChange={(e) => setProtocolName(e.target.value)}
             />
           </FormControl>
           <FormControl>
@@ -175,6 +182,10 @@ export default function Create() {
               rows={12}
               onChange={(e) => setQuery(e.target.value)}
             />
+          </FormControl>
+          <FormControl>
+            <FormLabel fontWeight="bold">Chain</FormLabel>
+            <Input readOnly value={addressChain?.name} type="text" />
           </FormControl>
           <FormControl>
             <FormLabel fontWeight="bold">Creator</FormLabel>

@@ -2,11 +2,12 @@ import Head from "next/head"
 import {
   Box,
   Container,
-  Divider,
   Flex,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Skeleton,
   SkeletonCircle,
-  SkeletonText,
   Stack,
   VStack,
 } from "@chakra-ui/react"
@@ -16,15 +17,19 @@ import Header from "../components/explore/header"
 import QueryCard from "../components/explore/queryCard"
 import { QueryData } from "../types"
 import { getQueryData } from "../firebase/queryData"
+import { SearchIcon } from "@chakra-ui/icons"
 
 export default function Explor() {
   const [queryList, setQueryList] = useState<QueryData[] | undefined>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [search, setSearch] = useState<string>("")
 
   useEffect(() => {
     setIsLoading(true)
     const getData = async () => {
       const data = await getQueryData()
+      console.log(data)
+
       setQueryList(data)
       setIsLoading(false)
     }
@@ -41,17 +46,29 @@ export default function Explor() {
       </Head>
       <Container
         minWidth="100vw"
+        minHeight="80vh"
         display="flex"
         alignItems="center"
         flexDirection="column"
       >
         <Header />
-        <Divider width="80%" my="5" />
+        <InputGroup variant="flushed" width="80%" my="5">
+          <InputLeftElement
+            pointerEvents="none"
+            children={<SearchIcon color="gray.300" />}
+          />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            type="text"
+            placeholder="Search"
+          />
+        </InputGroup>
         <Stack width="80%">
           {queryList &&
-            queryList.map((data, index) => (
-              <QueryCard key={index} data={data} />
-            ))}
+            queryList
+              .filter((data) => data.queryName.indexOf(search) > -1)
+              .map((data, index) => <QueryCard key={index} data={data} />)}
 
           {isLoading &&
             Array(10)

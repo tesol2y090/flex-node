@@ -1,12 +1,13 @@
 export interface QueryData {
   id: string
-  name: string
+  queryName: string
   description: string
-  chain: string
   category: string
-  protocol?: string
+  protocolChain: string
+  protocolName: string
   endpoint: string
   query: string
   cid?: string
   creator?: string
+  chain: any
 }

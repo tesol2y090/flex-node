@@ -10,7 +10,7 @@ import {
   Textarea,
   Text,
 } from "@chakra-ui/react"
-import Header from "../../components/create/header"
+import Header from "../../components/query/header"
 import { useState, useEffect } from "react"
 import { decode } from "js-base64"
 import { getQueryDataOne } from "../../firebase/queryData"
@@ -29,14 +29,16 @@ export default function Create() {
   const [cid, setCid] = useState<string | undefined>("")
   const [query, setQuery] = useState<string | undefined>("")
   const [creator, setCreator] = useState<string | undefined>("")
+  const [protocol, setProtocol] = useState<string | undefined>("")
 
   useEffect(() => {
     if (!queryId) return
     const getData = async () => {
       const queryData = await getQueryDataOne(queryId)
-      setName(queryData?.name)
+      setName(queryData?.queryName)
       setDescription(queryData?.description)
-      setChain(queryData?.chain)
+      setChain(queryData?.protocolChain)
+      setProtocol(queryData?.protocolName)
       setCategory(queryData?.category)
       setEndpoint(queryData?.endpoint)
       setQuery(decode(queryData?.query || ""))
@@ -60,12 +62,16 @@ export default function Create() {
         alignItems="center"
         flexDirection="column"
       >
-        <Header name={name} />
+        <Header name={name} chain={chain} />
         <Divider width="80%" my="5" />
         <Stack width="80%" gap="2">
           <FormControl>
             <FormLabel fontWeight="bold">Description</FormLabel>
             <Text> - {description}</Text>
+          </FormControl>
+          <FormControl>
+            <FormLabel fontWeight="bold">Protocol</FormLabel>
+            <Text> - {protocol}</Text>
           </FormControl>
           <FormControl>
             <FormLabel fontWeight="bold">Chain</FormLabel>
@@ -95,7 +101,7 @@ export default function Create() {
           </FormControl>
           <FormControl>
             <FormLabel fontWeight="bold">Query Command</FormLabel>
-            <Textarea rows={12} value={query} />
+            <Textarea readOnly rows={12} value={query} />
           </FormControl>
           <FormControl>
             <FormLabel fontWeight="bold">Creator</FormLabel>
