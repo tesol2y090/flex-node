@@ -52,11 +52,8 @@ export default function Explor() {
         flexDirection="column"
       >
         <Header />
-        <InputGroup variant="flushed" width="80%" my="5">
-          <InputLeftElement
-            pointerEvents="none"
-            children={<SearchIcon color="gray.300" />}
-          />
+        <InputGroup variant="flushed" width="80%" my="5" alignItems="center">
+          <SearchIcon color="gray.300" mx="5" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
