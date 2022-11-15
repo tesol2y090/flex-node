@@ -4,10 +4,8 @@ pragma solidity ^0.8.7;
 import '@chainlink/contracts/src/v0.8/ChainlinkClient.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
 
-contract FetchCompoundData is ChainlinkClient, ConfirmedOwner {
+contract FlexClient is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
-
-    string public id;
 
     bytes32 private jobId;
     uint256 private fee;
@@ -37,24 +35,23 @@ contract FetchCompoundData is ChainlinkClient, ConfirmedOwner {
      * Create a Chainlink request to retrieve API response, find the target
      * data which is located in a list
      */
-    function requestFlex(string memory _query, string memory _account, uint256 _chainId) public returns (bytes32) {
-        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
+    function requestFlex(string memory _query, string memory _account) public returns (bytes32) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfillCID.selector);
 
         // Build request
 		req.add('query', _query);
         req.add('account', _account);
-        req.addUint('chainId', _chainId);
 
         // Sends the request
         bytes32 requestId = sendChainlinkRequest(req, fee);
-        requestIdToAccount[requestId] = account;
+        requestIdToAccount[requestId] = _account;
         return requestId;
     }
 
     /**
      * Receive the response in the form of string
      */
-    function fulfill(bytes32 requestId, string memory value) public recordChainlinkFulfillment(requestId) {
+    function fulfillCID(bytes32 requestId, string memory value) public recordChainlinkFulfillment(requestId) {
         string memory account = requestIdToAccount[requestId];
         accountToData[account] = value;
         emit RequestData(requestId, value);
