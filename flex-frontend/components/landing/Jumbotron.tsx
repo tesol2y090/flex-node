@@ -1,6 +1,6 @@
 import React from "react"
-import Image from "next/image"
-import { Flex, Box, Text, Button } from "@chakra-ui/react"
+import { Flex, Box, Text, Button, Image } from "@chakra-ui/react"
+import Link from "next/link"
 
 const Jumbotron = () => {
   return (
@@ -12,16 +12,30 @@ const Jumbotron = () => {
         height="100%"
         justifyContent="center"
       >
-        <Text fontSize="5xl" lineHeight="1.2" fontWeight="bold">
+        <Text
+          fontSize="5xl"
+          lineHeight="1.2"
+          fontWeight="bold"
+          bgGradient="linear-gradient(90deg, #3894A3 -19.81%, #A661FF 105.58%);"
+          bgClip="text"
+        >
           Query data from every <br /> into your smart contract
         </Text>
-        <Text fontSize="xl" mt="4">
+        <Text fontWeight="400" fontSize="xl" mt="4">
           Flex node allows user query on-chain data from the graph into <br />
           your smart contract by chainlink node and store it on ipfs.
         </Text>
-        <Button width="30%" mt="8">
-          Launch app
-        </Button>
+        <Link href="/explor">
+          <Button
+            bgGradient="linear-gradient(90deg, #3894A3 -19.81%, #A661FF 105.58%);"
+            _hover={{ opacity: "83%" }}
+            color="#fff"
+            width="30%"
+            mt="8"
+          >
+            Launch app
+          </Button>
+        </Link>
       </Box>
       <Box
         display="flex"
@@ -30,13 +44,7 @@ const Jumbotron = () => {
         height="100%"
         justifyContent="center"
       >
-        <Image
-          alt="data"
-          width="774"
-          height="626"
-          layout="relative"
-          src="/jumboton.jpg"
-        />
+        <Image alt="data" src="/explore.png" borderRadius="12" boxShadow="md" />
       </Box>
     </Flex>
   )

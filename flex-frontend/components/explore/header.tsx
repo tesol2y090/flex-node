@@ -9,7 +9,9 @@ const Header = () => {
         Explore
       </Heading>
       <Link href="/create">
-        <Button>Create</Button>
+        <Button bg="#3894A3" color="#fff" _hover={{ opacity: "83%" }}>
+          Create
+        </Button>
       </Link>
     </Flex>
   )

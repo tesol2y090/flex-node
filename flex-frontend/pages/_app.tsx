@@ -66,6 +66,7 @@ export default function App({ Component, pageProps }: AppProps) {
             alignItems="center"
             flexDirection="column"
             position="relative"
+            padding="0"
           >
             <Navbar />
             <Component {...pageProps} />

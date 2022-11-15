@@ -2,6 +2,7 @@ import Head from "next/head"
 import Jumbotron from "../components/landing/Jumbotron"
 import HowItWork from "../components/landing/HowItWork"
 import ReadyBuilt from "../components/landing/ReadyBuilt"
+import { Divider } from "@chakra-ui/react"
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       </Head>
       <Jumbotron />
       <HowItWork />
+      <Divider width="40%" my="5" />
       <ReadyBuilt />
     </>
   )

@@ -191,7 +191,15 @@ export default function Create() {
             <FormLabel fontWeight="bold">Creator</FormLabel>
             <Input readOnly value={address} type="text" />
           </FormControl>
-          <Button isLoading={isLoading} type="submit" onClick={onSubmit}>
+          <Button
+            bgGradient="linear-gradient(90deg, #3894A3 -19.81%, #A661FF 105.58%);"
+            _hover={{ opacity: "83%" }}
+            color="#fff"
+            isLoading={isLoading}
+            loadingText="Creating..."
+            type="submit"
+            onClick={onSubmit}
+          >
             Create
           </Button>
         </Stack>

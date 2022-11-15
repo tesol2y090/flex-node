@@ -1,6 +1,6 @@
 import React from "react"
 import Image from "next/image"
-import { Flex, Box, Text, Button } from "@chakra-ui/react"
+import { Flex, Text } from "@chakra-ui/react"
 
 const Footer = () => {
   return (
@@ -8,18 +8,20 @@ const Footer = () => {
       <Flex gap="5" mb="2">
         <Image
           src="/icon/github-icon.svg"
-          width="24"
-          height="24"
+          width="20"
+          height="20"
           alt="github"
         />
         <Image
           src="/icon/twitter-icon.svg"
-          width="24"
-          height="24"
+          width="20"
+          height="20"
           alt="github"
         />
       </Flex>
-      © 2022 flexnode, Inc. All rights reserved.
+      <Text fontSize="xs" fontWeight="bold">
+        © 2022 flexnode, Inc. All rights reserved.
+      </Text>
     </Flex>
   )
 }

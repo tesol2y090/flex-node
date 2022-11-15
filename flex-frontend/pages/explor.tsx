@@ -64,7 +64,7 @@ export default function Explor() {
             placeholder="Search"
           />
         </InputGroup>
-        <Stack width="80%">
+        <Flex width="80%" display="flex" flexWrap="wrap" gap="4">
           {queryList &&
             queryList
               .filter((data) => data.queryName.indexOf(search) > -1)
@@ -77,7 +77,7 @@ export default function Explor() {
                 <Box
                   borderWidth="1px"
                   borderRadius="lg"
-                  width="100%"
+                  width="xl"
                   padding="6"
                   key={index}
                 >
@@ -85,22 +85,14 @@ export default function Explor() {
                     <Flex gap="2" width="30%">
                       <SkeletonCircle size="16" />
                     </Flex>
-                    <VStack align="left" justify="center" width="23%">
-                      <Skeleton height="20px" />
-                      <Skeleton height="20px" />
-                    </VStack>
-                    <VStack align="left" justify="center" width="23%">
-                      <Skeleton height="20px" />
-                      <Skeleton height="20px" />
-                    </VStack>
-                    <VStack align="left" justify="center" width="23%">
+                    <VStack align="left" justify="center" width="70%">
                       <Skeleton height="20px" />
                       <Skeleton height="20px" />
                     </VStack>
                   </Flex>
                 </Box>
               ))}
-        </Stack>
+        </Flex>
       </Container>
     </div>
   )
