@@ -12,8 +12,3 @@ services:
     ports:
       - 8080:8080
     command: start-dev
-
-networks:
-  default:
-    external:
-      name: chainlink-node_default
