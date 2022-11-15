@@ -32,7 +32,7 @@ const QueryCard = ({ data }: { data: QueryData }) => {
             <Image
               borderRadius="full"
               boxSize="64px"
-              src={`/chain/${data.protocolChain}.png`}
+              src={`/chain/${data.protocolChain.toLowerCase()}.png`}
               alt="ethereum"
             />
             <VStack align="left" justify="center">

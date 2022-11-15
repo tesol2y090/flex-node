@@ -9,7 +9,7 @@ const Header = ({ name, chain }: { name?: string; chain?: string }) => {
         <Image
           borderRadius="full"
           boxSize="64px"
-          src={`/chain/${chain}.png`}
+          src={`/chain/${chain?.toLowerCase()}.png`}
           alt="ethereum"
         />
         <Heading as="h1" size="xl" noOfLines={1}>
