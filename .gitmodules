@@ -7,3 +7,6 @@
 [submodule "flex-contracts/lib/solmate"]
 	path = flex-contracts/lib/solmate
 	url = https://github.com/rari-capital/solmate
+[submodule "flex-node-chainlink-adapter"]
+	path = flex-node-chainlink-adapter
+	url = git@github.com:tesol2y090/flex-node-chainlink-adapter.git
