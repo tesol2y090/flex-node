@@ -20,26 +20,29 @@ contract FlexClient is ChainlinkClient, ConfirmedOwner {
      *
      * Mumbai Testnet details:
      * Link Token: 0x326C977E6efc84E512bB9C30f76E30c160eD06FB
-     * Oracle: 0x45c37ba27F6d1AB33b6DE1628b2dF777DE96c08f (Chainlink DevRel)
-     * jobId: 88a2f96374b1479980afc72439ef963d
+     * Oracle: 0x364AAB5aBd6C0B42f9Ba347dF024B67Cc6a4a882
+     * jobId: 98c356d16abe49e4939846ee6c52a364
      *
      */
-    constructor(address _chainlinkToken, address _chainlinkOracle, bytes32 _jobId) ConfirmedOwner(msg.sender) {
+    constructor(address _chainlinkToken, address _chainlinkOracle, string memory _jobId) ConfirmedOwner(msg.sender) {
         setChainlinkToken(_chainlinkToken);
         setChainlinkOracle(_chainlinkOracle);
-        jobId = _jobId;
+        jobId = stringToBytes32(_jobId);
         fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
     }
 
     /**
      * Create a Chainlink request to retrieve API response, find the target
      * data which is located in a list
+     * @param
+     * _cid : cid
+     * _account : an address to fetchdata
      */
-    function requestFlex(string memory _query, string memory _account) public returns (bytes32) {
+    function requestFlex(string memory _cid, string memory _account) public returns (bytes32) {
         Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfillCID.selector);
 
         // Build request
-		req.add('query', _query);
+		req.add('cid', _cid);
         req.add('account', _account);
 
         // Sends the request
@@ -63,5 +66,17 @@ contract FlexClient is ChainlinkClient, ConfirmedOwner {
     function withdrawLink() public onlyOwner {
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
         require(link.transfer(msg.sender, link.balanceOf(address(this))), 'Unable to transfer');
+    }
+
+    function stringToBytes32(string memory source) private pure returns (bytes32 result) {
+        bytes memory tempEmptyStringTest = bytes(source);
+        if (tempEmptyStringTest.length == 0) {
+            return 0x0;
+        }
+
+        assembly {
+            // solhint-disable-line no-inline-assembly
+            result := mload(add(source, 32))
+        }
     }
 }
