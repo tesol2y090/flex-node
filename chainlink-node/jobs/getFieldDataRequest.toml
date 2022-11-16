@@ -15,7 +15,7 @@ observationSource = """
                  requestData="{\\"data\\": { \\"cid\\": $(decode_cbor.cid)}}"
                 ]
     parse			 	[type="jsonparse"
-                 path="data,$(decode_cbor.path)"
+                 path="$(decode_cbor.path)"
                  data="$(data)"]
 		encode_data [type="ethabiencode" abi="(bytes32 requestId, string value)" data="{\\"requestId\\": $(decode_log.requestId), \\"value\\": $(parse)}"]
     encode_tx   [type="ethabiencode"
