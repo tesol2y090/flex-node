@@ -1,6 +1,6 @@
 type = "directrequest"
 schemaVersion = 1
-name = "Get Direct Request"
+name = "Get Flex Data Request"
 maxTaskDuration = "30s"
 contractAddress = "0x364AAB5aBd6C0B42f9Ba347dF024B67Cc6a4a882"
 observationSource = """
@@ -9,19 +9,27 @@ observationSource = """
                  data="$(jobRun.logData)"
                  topics="$(jobRun.logTopics)"]
     decode_cbor [type=cborparse data="$(decode_log.data)"]
-    send_bridge [type="bridge"
-                 name="compound-get"
+    query_data  [type="bridge"
+                 name="get_query_data_from_cid"
                  timeout="30s"
-                 requestData="{\\"data\\": { \\"chainId\\": $(decode_cbor.chainId), \\"account\\": $(decode_cbor.account)}}"
+                 requestData="{\\"data\\": { \\"cid\\": $(decode_cbor.cid)}}"
                 ]
-    parse 		  [type="jsonparse"
-                 path="data,credits"
-                 data="$(send_bridge)"]
-    encode_data [type="ethabiencode" abi="(bytes32 requestId, string value)" data="{\\"requestId\\": $(decode_log.requestId), \\"value\\": $(parse)}"]
+    query_parse [type="jsonparse"
+                 path="data,query"
+                 data="$(query_data)"]
+    data        [type="bridge"
+                 name="get_onchain_data_return_cid"
+                 timeout="30s"
+                 requestData="{\\"data\\": { \\"query\\": $(decode_cbor.cid), \\"account\\": $(decode_cbor.account)}}"
+                ]
+    data_parse  [type="jsonparse"
+                 path="data,cid"
+                 data="$(query_data)"]
+    encode_data [type="ethabiencode" abi="(bytes32 requestId, string value)" data="{\\"requestId\\": $(decode_log.requestId), \\"value\\": $(data_parse)}"]
     encode_tx   [type="ethabiencode"
                  abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
                  data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\": $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_data)}"
                 ]
     submit_tx   [type="ethtx" to="0x364AAB5aBd6C0B42f9Ba347dF024B67Cc6a4a882" data="$(encode_tx)"]
-  	decode_log -> decode_cbor -> send_bridge -> parse -> encode_data -> encode_tx -> submit_tx
+  	decode_log -> decode_cbor -> query_data -> query_parse -> data -> data_parse ->encode_data -> encode_tx -> submit_tx 
 """
