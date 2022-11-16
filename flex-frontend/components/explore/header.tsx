@@ -9,7 +9,11 @@ const Header = () => {
         Explore
       </Heading>
       <Link href="/create">
-        <Button bg="#3894A3" color="#fff" _hover={{ opacity: "83%" }}>
+        <Button
+          bgGradient="linear-gradient(90deg, #3894A3 -19.81%, #A661FF 105.58%);"
+          color="#fff"
+          _hover={{ opacity: "83%" }}
+        >
           Create
         </Button>
       </Link>

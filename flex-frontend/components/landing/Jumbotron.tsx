@@ -19,10 +19,10 @@ const Jumbotron = () => {
           bgGradient="linear-gradient(90deg, #3894A3 -19.81%, #A661FF 105.58%);"
           bgClip="text"
         >
-          Query data from every <br /> into your smart contract
+          Query on-chain data <br /> into your smart contract
         </Text>
         <Text fontWeight="400" fontSize="xl" mt="4">
-          Flex node allows user query on-chain data from the graph into <br />
+          Flex node allows user query on-chain data from other chain into <br />
           your smart contract by chainlink node and store it on ipfs.
         </Text>
         <Link href="/explor">

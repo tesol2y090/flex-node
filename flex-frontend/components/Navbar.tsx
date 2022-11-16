@@ -27,12 +27,14 @@ const Navbar = () => {
       shadow="0px 2px 2px #ebebeb;"
     >
       <Flex width="80%" height="20" align="center" justify="space-between">
-        <Image
-          src="/flex-node-logo.png"
-          width={136}
-          height={38}
-          alt="flex node logo"
-        />
+        <Link href="/">
+          <Image
+            src="/flex-node-logo.png"
+            width={136}
+            height={38}
+            alt="flex node logo"
+          />
+        </Link>
         {pathname === "/" ? (
           <Link href="/explor">
             <Button
