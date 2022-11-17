@@ -1,6 +1,5 @@
 import React from "react"
-import Image from "next/image"
-import { Flex, Box, Text, Button } from "@chakra-ui/react"
+import { Flex, Box, Text, Image } from "@chakra-ui/react"
 
 const Jumbotron = () => {
   return (
@@ -14,10 +13,9 @@ const Jumbotron = () => {
       >
         <Image
           alt="data"
-          width="774"
-          height="626"
-          layout="relative"
-          src="/explore.png"
+          src="/how-to-work.png"
+          borderRadius="12"
+          boxShadow="md"
         />
       </Box>
       <Box
