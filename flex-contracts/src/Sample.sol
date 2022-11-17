@@ -10,14 +10,16 @@ contract Sample is FlexClient {
         address _chainlinkToken,
         address _chainlinkOracle,
         string memory _getFlexJobId,
-        string memory _getFieldJobId,
+        string memory _getFieldStringJobId,
+        string memory _getFieldUintJobId,
         string memory _cid
     )
         FlexClient(
             _chainlinkToken,
             _chainlinkOracle,
             _getFlexJobId,
-            _getFieldJobId
+            _getFieldStringJobId,
+            _getFieldUintJobId
         )
     {
         cid = _cid;
@@ -31,11 +33,19 @@ contract Sample is FlexClient {
         return requestId;
     }
 
-    function getFieldData(string memory _path, string memory _account)
+    function getFieldDataString(string memory _path, string memory _account)
         external
         returns (bytes32)
     {
-        bytes32 requestId = requestField(_path, _account);
+        bytes32 requestId = requestFieldString(_path, _account);
+        return requestId;
+    }
+
+    function getFieldDataUint(string memory _path, string memory _account)
+        external
+        returns (bytes32)
+    {
+        bytes32 requestId = requestFieldUint(_path, _account);
         return requestId;
     }
 }

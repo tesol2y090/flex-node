@@ -8,16 +8,19 @@ contract FlexClient is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
 
     bytes32 private getFlexJobId;
-    bytes32 private getFieldJobId;
+    bytes32 private getFieldStringJobId;
+    bytes32 private getFieldUintJobId;
     uint256 private fee;
 
     mapping(string => string) public accountToCID;
-    mapping(string => string) public accountToData;
+    mapping(string => string) public accountToDataString;
+    mapping(string => uint256) public accountToDataUint;
 
     mapping(bytes32 => string) public requestFlexIdToAccount;
     mapping(bytes32 => string) public requestFieldIdToAccount;
 
-    event RequestData(bytes32 indexed requestId, string id);
+    event RequestDataString(bytes32 indexed requestId, string id);
+    event RequestDataUint(bytes32 indexed requestId, uint256 id);
 
     /**
      * @notice Initialize the link token and target oracle
@@ -26,19 +29,22 @@ contract FlexClient is ChainlinkClient, ConfirmedOwner {
      * Link Token: 0x326C977E6efc84E512bB9C30f76E30c160eD06FB
      * Oracle: 0x364AAB5aBd6C0B42f9Ba347dF024B67Cc6a4a882
      * getFlexJobId: 98c356d16abe49e4939846ee6c52a364
-     * getFieldJobId: 7c6ad2e609cc499b8af41d4a6319cdf6
+     * getFieldStringJobId: 542864ff9a6145b8bdcd733a9503ae09
+     * getFieldUintJobId: 70dd3b366b29405985a38469be42b9bb
      *
      */
     constructor(
         address _chainlinkToken,
         address _chainlinkOracle,
         string memory _getFlexJobId,
-        string memory _getFieldJobId
+        string memory _getFieldStringJobId,
+        string memory _getFieldUintJobId 
     ) ConfirmedOwner(msg.sender) {
         setChainlinkToken(_chainlinkToken);
         setChainlinkOracle(_chainlinkOracle);
         getFlexJobId = stringToBytes32(_getFlexJobId);
-        getFieldJobId = stringToBytes32(_getFieldJobId);
+        getFieldStringJobId = stringToBytes32(_getFieldStringJobId);
+        getFieldUintJobId = stringToBytes32(_getFieldUintJobId);
         fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
     }
 
@@ -76,15 +82,15 @@ contract FlexClient is ChainlinkClient, ConfirmedOwner {
      * _path : path to get in cid
      * _account : an address to get cid
      */
-    function requestField(string memory _path, string memory _account)
+    function requestFieldString(string memory _path, string memory _account)
         internal
         returns (bytes32)
     {
         string memory cid = accountToCID[_account];
         Chainlink.Request memory req = buildChainlinkRequest(
-            getFieldJobId,
+            getFieldStringJobId,
             address(this),
-            this.fulfillField.selector
+            this.fulfillFieldString.selector
         );
 
         // Build request
@@ -98,6 +104,35 @@ contract FlexClient is ChainlinkClient, ConfirmedOwner {
     }
 
     /**
+     * Get a field from flex
+     * data which is located in a list
+     * @param
+     * _path : path to get in cid
+     * _account : an address to get cid
+     */
+    function requestFieldUint(string memory _path, string memory _account)
+        internal
+        returns (bytes32)
+    {
+        string memory cid = accountToCID[_account];
+        Chainlink.Request memory req = buildChainlinkRequest(
+            getFieldUintJobId,
+            address(this),
+            this.fulfillFieldUint.selector
+        );
+
+        // Build request
+        req.add("cid", cid);
+        req.add("path", _path);
+
+        // Sends the request
+        bytes32 requestId = sendChainlinkRequest(req, fee);
+        requestFieldIdToAccount[requestId] = _account;
+        return requestId;
+    }
+
+
+    /**
      * Receive CID the response in the form of string
      */
     function fulfillFlex(bytes32 requestId, string memory value)
@@ -106,20 +141,33 @@ contract FlexClient is ChainlinkClient, ConfirmedOwner {
     {
         string memory account = requestFlexIdToAccount[requestId];
         accountToCID[account] = value;
-        emit RequestData(requestId, value);
+        emit RequestDataString(requestId, value);
     }
 
     /**
-     * Receive CID the response in the form of string
+     * Receive Data the response in the form of string
      */
-    function fulfillField(bytes32 requestId, string memory value)
+    function fulfillFieldString(bytes32 requestId, string memory value)
         public
         recordChainlinkFulfillment(requestId)
     {
         string memory account = requestFieldIdToAccount[requestId];
-        accountToData[account] = value;
-        emit RequestData(requestId, value);
+        accountToDataString[account] = value;
+        emit RequestDataString(requestId, value);
     }
+
+    /**
+     * Receive Data the response in the form of uint
+     */
+    function fulfillFieldUint(bytes32 requestId, uint256 value)
+        public
+        recordChainlinkFulfillment(requestId)
+    {
+        string memory account = requestFieldIdToAccount[requestId];
+        accountToDataUint[account] = value;
+        emit RequestDataUint(requestId, value);
+    }
+
 
     /**
      * Allow withdraw of Link tokens from the contract

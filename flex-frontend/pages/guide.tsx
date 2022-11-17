@@ -45,7 +45,10 @@ export default function Explor() {
               Get Flex Job Id: 98c356d16abe49e4939846ee6c52a364
             </ListItem>
             <ListItem>
-              Get Field Job Id: 7c6ad2e609cc499b8af41d4a6319cdf6
+              Get Field String Job Id: 542864ff9a6145b8bdcd733a9503ae09
+            </ListItem>
+            <ListItem>
+              Get Field Uint Job Id: 70dd3b366b29405985a38469be42b9bb
             </ListItem>
           </UnorderedList>
         </VStack>
