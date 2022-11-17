@@ -168,10 +168,10 @@ export default function Explor() {
               </Container>
             </ListItem>
             <ListItem>
-              Call requestField to get data depending on path
+              Call requestFieldString to get data string depending on path
               <Container padding="0" my="2">
                 <CodeBlock
-                  text="requestField(string memory _path, string memory _account)"
+                  text="requestFieldString(string memory _path, string memory _account)"
                   language="js"
                   theme={dracula}
                   showLineNumbers={false}
@@ -179,10 +179,32 @@ export default function Explor() {
               </Container>
             </ListItem>
             <ListItem>
-              Chainlink will fullfill data the result into
+              Chainlink will fullfill string data the result into
               <Container padding="0" my="2">
                 <CodeBlock
-                  text="mapping(string => string) public accountToData;"
+                  text="mapping(string => string) public accountToDataString;"
+                  language="js"
+                  theme={dracula}
+                  showLineNumbers={false}
+                />
+              </Container>
+            </ListItem>
+            <ListItem>
+              Call requestFieldUint to get data uint depending on path
+              <Container padding="0" my="2">
+                <CodeBlock
+                  text="requestFieldUint(string memory _path, string memory _account)"
+                  language="js"
+                  theme={dracula}
+                  showLineNumbers={false}
+                />
+              </Container>
+            </ListItem>
+            <ListItem>
+              Chainlink will fullfill uint data the result into
+              <Container padding="0" my="2">
+                <CodeBlock
+                  text="mapping(string => uint256) public accountToDataUint;"
                   language="js"
                   theme={dracula}
                   showLineNumbers={false}
