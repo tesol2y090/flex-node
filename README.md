@@ -8,15 +8,11 @@ Our smart contract is live on polygon mumbai testnet
 
 ## Description
 
----
-
 Flex node allows users to write graphql query commands or our template command to query on-chain activities such as borrows events in compounds on Polygon mainnet or nft holding in opensea on Ethereum mainnet and store those file as json file into ipfs via web3.storage.
 
 When smart contract want to calculate those file, we also provide chainink external adapter to get those file and compute on chainlink node and send result back into smart contract.
 
 ## Architecture
-
----
 
 ![Flex Node Architecture](https://flex-node.vercel.app/architecture.png)
 
@@ -39,6 +35,8 @@ We implement 2 layers, storage layer and execution layer.
 - Flex contracts
 
   Sample contract that gets on-chain data and how to build requests from our flex-node.
+
+---
 
 ## What next's
 
