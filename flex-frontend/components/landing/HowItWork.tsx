@@ -13,7 +13,7 @@ const Jumbotron = () => {
       >
         <Image
           alt="data"
-          src="/how-to-work.png"
+          src="/architecture.png"
           borderRadius="12"
           boxShadow="md"
         />
